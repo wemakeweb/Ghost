@@ -13,11 +13,18 @@ express = require('express');
 ghost = require('./core');
 errors = require('./core/server/errors');
 
+/** own api **/
+var plugins = [require('./plugins/post'), require('./plugins/location'), require('./plugins/blog')];
+
 // Create our parent express app instance.
 parentApp = express();
 
 // Call Ghost to get an instance of GhostServer
 ghost().then(function (ghostServer) {
+	plugins.forEach(function(plugin){
+		plugin.mount(parentApp);
+	});
+
     // Mount our Ghost instance on our desired subdirectory path if it exists.
     parentApp.use(ghostServer.config.paths.subdir, ghostServer.rootApp);
 
