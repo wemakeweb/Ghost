@@ -1,7 +1,8 @@
 import BaseValidator from './base';
 
-var TagSettingsValidator = BaseValidator.create({
-    properties: ['name', 'metaTitle', 'metaDescription'],
+export default BaseValidator.create({
+    properties: ['name', 'slug', 'description', 'metaTitle', 'metaDescription'],
+
     name: function (model) {
         var name = model.get('name');
 
@@ -11,8 +12,30 @@ var TagSettingsValidator = BaseValidator.create({
         } else if (name.match(/^,/)) {
             model.get('errors').add('name', 'Tag names can\'t start with commas.');
             this.invalidate();
+        } else if (!validator.isLength(name, 0, 150)) {
+            model.get('errors').add('name', 'Tag names cannot be longer than 150 characters.');
+            this.invalidate();
         }
     },
+
+    slug: function (model) {
+        var slug = model.get('slug');
+
+        if (!validator.isLength(slug, 0, 150)) {
+            model.get('errors').add('slug', 'URL cannot be longer than 150 characters.');
+            this.invalidate();
+        }
+    },
+
+    description: function (model) {
+        var description = model.get('description');
+
+        if (!validator.isLength(description, 0, 200)) {
+            model.get('errors').add('description', 'Description cannot be longer than 200 characters.');
+            this.invalidate();
+        }
+    },
+
     metaTitle: function (model) {
         var metaTitle = model.get('meta_title');
 
@@ -21,6 +44,7 @@ var TagSettingsValidator = BaseValidator.create({
             this.invalidate();
         }
     },
+
     metaDescription: function (model) {
         var metaDescription = model.get('meta_description');
 
@@ -30,5 +54,3 @@ var TagSettingsValidator = BaseValidator.create({
         }
     }
 });
-
-export default TagSettingsValidator;

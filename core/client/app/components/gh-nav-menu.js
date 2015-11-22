@@ -6,6 +6,7 @@ export default Ember.Component.extend({
     classNameBindings: ['open'],
 
     config: Ember.inject.service(),
+    session: Ember.inject.service(),
 
     open: false,
 
@@ -24,6 +25,10 @@ export default Ember.Component.extend({
 
         closeMobileMenu: function () {
             this.sendAction('closeMobileMenu');
+        },
+
+        openAutoNav: function () {
+            this.sendAction('openAutoNav');
         }
     }
 });

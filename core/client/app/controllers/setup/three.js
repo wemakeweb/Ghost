@@ -6,6 +6,7 @@ export default Ember.Controller.extend({
     two: Ember.inject.controller('setup/two'),
 
     errors: DS.Errors.create(),
+    hasValidated: Ember.A(),
     users: '',
     ownerEmail: Ember.computed.alias('two.email'),
     submitting: false,
@@ -63,9 +64,13 @@ export default Ember.Controller.extend({
 
     validate: function () {
         var errors = this.get('errors'),
-            validationResult = this.get('validationResult');
+            validationResult = this.get('validationResult'),
+            property = 'users';
 
         errors.clear();
+
+        // If property isn't in the `hasValidated` array, add it to mark that this field can show a validation result
+        this.get('hasValidated').addObject(property);
 
         if (validationResult === true) { return true; }
 
@@ -73,7 +78,7 @@ export default Ember.Controller.extend({
             // Only one error type here so far, but one day the errors might be more detailed
             switch (error.error) {
             case 'email':
-                errors.add('users', error.user + ' is not a valid email.');
+                errors.add(property, error.user + ' is not a valid email.');
             }
         });
 
@@ -114,7 +119,7 @@ export default Ember.Controller.extend({
     }),
 
     authorRole: Ember.computed(function () {
-        return this.store.find('role').then(function (roles) {
+        return this.store.findAll('role', {reload: true}).then(function (roles) {
             return roles.findBy('name', 'Author');
         });
     }),
@@ -170,13 +175,13 @@ export default Ember.Controller.extend({
                             invitationsString = erroredEmails.length > 1 ? ' invitations: ' : ' invitation: ';
                             message = 'Failed to send ' + erroredEmails.length + invitationsString;
                             message += erroredEmails.join(', ');
-                            notifications.showAlert(message, {type: 'error', delayed: successCount > 0});
+                            notifications.showAlert(message, {type: 'error', delayed: successCount > 0, key: 'signup.send-invitations.failed'});
                         }
 
                         if (successCount > 0) {
                             // pluralize
                             invitationsString = successCount > 1 ? 'invitations' : 'invitation';
-                            notifications.showAlert(successCount + ' ' + invitationsString + ' sent!', {type: 'success', delayed: true});
+                            notifications.showAlert(successCount + ' ' + invitationsString + ' sent!', {type: 'success', delayed: true, key: 'signup.send-invitations.success'});
                         }
                         self.send('loadServerNotifications');
                         self.toggleProperty('submitting');

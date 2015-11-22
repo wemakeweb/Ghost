@@ -5,10 +5,10 @@ var Promise      = require('bluebird'),
     dataProvider = require('../models'),
     errors       = require('../errors'),
     utils        = require('./utils'),
-    pipeline        = require('../utils/pipeline'),
+    pipeline     = require('../utils/pipeline'),
 
     docName      = 'tags',
-    allowedIncludes = ['post_count'],
+    allowedIncludes = ['count.posts'],
     tags;
 
 /**
