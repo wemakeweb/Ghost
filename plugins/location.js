@@ -3,28 +3,53 @@ var request = require('request-promise');
 
 var locations = [
 	{
+		city: 'Stuttgart',
+		country: 'Germany',
+		timezone: 'Europe/Berlin',
+		cords: [9.163473, 48.789982],
+		departure: '04.11.2015'
+	},
+	{
 		city: 'Bangkok',
 		country: 'Thailand',
 		timezone: 'Asia/Bangkok',
-		cords: [13.735115, 100.561646]
+		cords: [100.561646, 13.735115],
+		departure: '09.11.2015'
 	},
 	{
 		city: 'Koh Samui',
 		country: 'Thailand',
 		timezone: 'Asia/Bangkok',
-		cords: [9.512978, 100.013425]
+		cords: [100.013425, 9.512978],
+		departure: '13.11.2015'
 	},
 	{
 		city: 'Ao Nang',
 		country: 'Thailand',
 		timezone: 'Asia/Bangkok',
-		cords: [8.052805, 98.814320]
+		cords: [98.814320, 8.052805],
+		departure: '17.11.2015'
 	},
 	{
 		city: 'Phuket',
 		country: 'Thailand',
 		timezone: 'Asia/Bangkok',
-		cords: [7.880640, 98.391227]
+		cords: [98.391227, 7.880640],
+		departure: '21.11.2015'
+
+	},
+	{
+		city: 'Singapore',
+		country: 'Singapore',
+		timezone: 'Asia/Singapore',
+		cords: [103.860052, 1.349736],
+		departure: '25.11.2015'
+	},
+	{
+		city: 'Kuala Lumpur',
+		country: 'Malaysia',
+		timezone: 'Asia/Kuala_Lumpur',
+		cords: [101.690962, 3.107455]
 	}
 ];
 
