@@ -53,18 +53,32 @@ var locations = [
 	}
 ];
 
+
+
 module.exports = {
 	mount: function(http){
-		http.get('/_api/locations', this.listLocations.bind(this));
+		http.get('/_api/locations', this.lockupLocationByName.bind(this));
+		http.get('/_api/log', this.listLogsforUser.bind(this));
+		http.post('/_api/log', this.addLogforUser.bind(this));
 
 		Weather.requestForCurrentCity();
 		Weather.startRequestInterval();
 	},
 
-	listLocations: function(req, res){
+	lockupLocationByName: function(req, res){
+		var name = req.query.query;
+
+		res.json({});
+	},
+
+	listLogsforUser: function(req, res){
 		res.send(JSON.stringify({
 			locations: locations
 		}));
+	},
+
+	addLogforUser: function(req, res){
+
 	}
 }
 
@@ -87,6 +101,8 @@ var Weather = {
 				temp: result.current_observation.temp_c,
 				str: result.current_observation.weather
 			}
+		}).catch(function(err){ 
+			console.log('Weather Error: %s', err);
 		});
 	},
 
