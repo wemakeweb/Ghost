@@ -52,6 +52,8 @@ Router.map(function () {
     this.route('settings.navigation', {path: '/settings/navigation'});
 
     this.route('error404', {path: '/*path'});
+
+    this.route('locations');
 });
 
 export default Router;
