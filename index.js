@@ -21,7 +21,7 @@ parentApp = express();
 
 // Call Ghost to get an instance of GhostServer
 ghost().then(function (ghostServer) {
-    new nomadLogApp().mount(parentApp)
+    new nomadLogApp().mount(parentApp);
 
     // Mount our Ghost instance on our desired subdirectory path if it exists.
     parentApp.use(ghostServer.config.paths.subdir, ghostServer.rootApp);

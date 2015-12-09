@@ -1,59 +1,6 @@
 var api = require('../core/server/api/index');
 var request = require('request-promise');
-
-var locations = [
-	{
-		city: 'Stuttgart',
-		country: 'Germany',
-		timezone: 'Europe/Berlin',
-		cords: [9.163473, 48.789982],
-		departure: '04.11.2015'
-	},
-	{
-		city: 'Bangkok',
-		country: 'Thailand',
-		timezone: 'Asia/Bangkok',
-		cords: [100.561646, 13.735115],
-		departure: '09.11.2015'
-	},
-	{
-		city: 'Koh Samui',
-		country: 'Thailand',
-		timezone: 'Asia/Bangkok',
-		cords: [100.013425, 9.512978],
-		departure: '13.11.2015'
-	},
-	{
-		city: 'Ao Nang',
-		country: 'Thailand',
-		timezone: 'Asia/Bangkok',
-		cords: [98.814320, 8.052805],
-		departure: '17.11.2015'
-	},
-	{
-		city: 'Phuket',
-		country: 'Thailand',
-		timezone: 'Asia/Bangkok',
-		cords: [98.391227, 7.880640],
-		departure: '21.11.2015'
-
-	},
-	{
-		city: 'Singapore',
-		country: 'Singapore',
-		timezone: 'Asia/Singapore',
-		cords: [103.860052, 1.349736],
-		departure: '25.11.2015'
-	},
-	{
-		city: 'Kuala Lumpur',
-		country: 'Malaysia',
-		timezone: 'Asia/Kuala_Lumpur',
-		cords: [101.690962, 3.107455]
-	}
-];
-
-
+var nomadApi = require('./data/api');
 
 module.exports = {
 	mount: function(http){
@@ -61,8 +8,8 @@ module.exports = {
 		http.get('/_api/log', this.listLogsforUser.bind(this));
 		http.post('/_api/log', this.addLogforUser.bind(this));
 
-		Weather.requestForCurrentCity();
-		Weather.startRequestInterval();
+		// Weather.requestForCurrentCity();
+		// Weather.startRequestInterval();
 	},
 
 	lockupLocationByName: function(req, res){
@@ -72,9 +19,16 @@ module.exports = {
 	},
 
 	listLogsforUser: function(req, res){
-		res.send(JSON.stringify({
-			locations: locations
-		}));
+		nomadApi.getLocationsForUser(1).then(function(locations){
+			return locations.map(function(location){
+				location.coords = location.coords.split(',').map(parseFloat);
+				return location;
+			});
+		}).then(function(locations){
+			res.json({
+				locations: locations
+			});
+		});
 	},
 
 	addLogforUser: function(req, res){

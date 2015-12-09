@@ -1,23 +1,25 @@
 var knex = require('knex');
 
-module.exports = DBSingleton;
-
 function DBSingleton(config){
-	this.connection = knex({
-		dialect: config.database.type,
-	  	connection: {
-	    	filename: config.database.path
-	  	}
-	});
+	this.migrations = config.database.migrations;
+	this.connection = knex(config.database);
+	DBSingleton.instance = this;
 };
 
-DBSingleton.prototype.setupModels = function(models){
-	var connection = this.connection;
-	var promises = [];
-
-	models.forEach(function(model){
-		promises.push(model.setup(connection));
-	});
-
-	return Promise.all(promises);
+DBSingleton.getInstance = function(){
+	return DBSingleton.instance;
 };
+
+DBSingleton.connection = function(){
+	return DBSingleton.instance.connection;
+};
+
+DBSingleton.prototype.migrate = function() {
+	return this.connection.migrate.latest();
+};
+
+DBSingleton.prototype.seed = function(){
+	return this.connection.seed.run();
+};
+
+module.exports = DBSingleton;

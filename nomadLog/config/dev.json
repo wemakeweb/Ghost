@@ -1,6 +1,18 @@
 {
 	"database": {
-		"type": "sqlite3",
-		"path": "./dev.db"
+		"migrations": {
+			"directory": "./nomadLog/data/migrations",
+			"tableName": "migrations"
+		},
+		"seeds": {
+      		"directory": "./nomadLog/data/seeds"
+  		},
+  		"client": "mysql",
+		"connection": {
+			"host"     : "127.0.0.1",
+			"user"     : "root",
+			"password" : "",
+			"database" : "nomadlog_dev"
+		}
 	}
 }

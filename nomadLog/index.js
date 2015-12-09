@@ -2,18 +2,13 @@ module.exports = NomadLog;
 
 var config = require('./config/dev.json');
 
+var DBBase = require('./data/base');
+
 var plugins = [
 	require('./post'), 
 	require('./location'), 
 	require('./blog')
 ];
-
-var models = [
-	require('./models/user')
-]
-
-var DBBase = require('./data/base');
-
 
 function NomadLog(){
 	this.setupDB();
@@ -21,15 +16,16 @@ function NomadLog(){
 
 NomadLog.prototype.setupDB = function(){
 	this.db = new DBBase(config);
-	this.db.setupModels(models)
-	.then(function(){
-		console.log('All models ready');
-	}.bind(this))
-	.catch(function(err){
-		console.log(err)
-	})
-};
 
+	/* this.db.migrate().then(function(version){
+		console.log('Migrations done', version.join('.'));
+		return this.db.seed();
+	}.bind(this)).then(function(){
+		console.log('Seeding done');
+	}).catch(function(err){
+		console.log('DB error', err.stack || err);
+	}); */
+};
 
 NomadLog.prototype.mount = function(parentApp){
 	plugins.forEach(function(plugin){
