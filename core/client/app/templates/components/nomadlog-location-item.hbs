@@ -1,0 +1,31 @@
+<div class="gh-blognav-line">
+    {{#gh-validation-status-container tagName="span" class="gh-blognav-label" errors=navItem.errors property="name" hasValidated=navItem.hasValidated}}
+        {{nomadlog-city-country-input placeholder="City, Country" city=navItem.city country=navItem.country}}
+        {{gh-error-message errors=navItem.errors property="name"}}
+    {{/gh-validation-status-container}}
+
+    {{#gh-validation-status-container tagName="span" class="gh-blognav-label" errors=navItem.errors property="coords" hasValidated=navItem.hasValidated}}
+        {{nomadlog-coords-input placeholder="coords" coords=navItem.coords}}
+        {{gh-error-message errors=navItem.errors property="coords"}}
+    {{/gh-validation-status-container}}
+
+    {{#gh-validation-status-container tagName="span" class="gh-blognav-label" errors=navItem.errors property="arrival" hasValidated=navItem.hasValidated}}
+        {{nomadlog-date-input placeholder="Arrival" date=navItem.arrival}}
+        {{gh-error-message errors=navItem.errors property="arrival"}}
+    {{/gh-validation-status-container}}
+
+    {{#gh-validation-status-container tagName="span" class="gh-blognav-label" errors=navItem.errors property="departure" hasValidated=navItem.hasValidated}}
+        {{nomadlog-date-input placeholder="Departure" date=navItem.departure}}
+        {{gh-error-message errors=navItem.errors property="departure"}}
+    {{/gh-validation-status-container}}
+</div>
+
+{{#if navItem.last}}
+    <button type="button" class="gh-blognav-add" {{action "addItem"}}>
+        <i class="icon-add2"><span class="sr-only">Add</span></i>
+    </button>
+{{else}}
+    <button type="button" class="gh-blognav-delete" {{action "deleteItem" navItem}}>
+        <i class="icon-trash"><span class="sr-only">Delete</span></i>
+    </button>
+{{/if}}
